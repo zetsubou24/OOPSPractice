@@ -94,31 +94,54 @@ class Mac extends Laptop{
     }
 }
 
-//Main Driver Class
-public class OOPSDemo {
-    private static ArrayList<Laptop> LaptopList;
+//Aggregation
+class LaptopList {
+    private static ArrayList<Laptop> LaptopArrayList = new ArrayList<>();
 
-    private static void shutdownAllLaptops(){
-        System.out.println("Shutting down all laptops");
-
-        for (Laptop LaptopObject: LaptopList) {
-            LaptopObject.turnOff();
-        }
-
+    public static void addLaptop(Laptop LaptopObject){
+        LaptopArrayList.add(LaptopObject);
     }
 
+    public static ArrayList<Laptop> getLaptops(){
+        return LaptopArrayList;
+    }
+
+    public static void shutdownAllLaptops(){
+        System.out.println("Shutting down all laptops");
+
+        for (Laptop LaptopObject: LaptopArrayList) {
+            LaptopObject.turnOff();
+        }
+    }
+
+    public static void turnOnAllLaptops(){
+        System.out.println("Turning on all laptops");
+
+        for (Laptop LaptopObject: LaptopArrayList) {
+            LaptopObject.turnOn();
+        }
+    }
+
+}
+
+//Main Driver Class
+public class OOPSDemo {
     public static void main(String args[]) {
-        LaptopList = new ArrayList<>();
+        LaptopList UserLaptops = new LaptopList();
+
 
         DELL dellObject = new DELL(1, "MyDELL");
         Mac macObject = new Mac(2, "MyMac");
+
+        UserLaptops.addLaptop(dellObject);
+        UserLaptops.addLaptop(macObject);
 
         dellObject.turnOn();
         macObject.turnOn();
 
         dellObject.playGame();
 
-        shutdownAllLaptops();
+        UserLaptops.shutdownAllLaptops();
     }
 }
 
