@@ -8,9 +8,9 @@ interface Gaming {
 }
 
 //Parent class
-class Laptop{
+abstract class Laptop{
     private int LaptopID;
-    private String Laptopname;
+    protected String Laptopname;
     private int RAMSize;
     private boolean switchedOn = false;
 
@@ -48,11 +48,11 @@ class Laptop{
     public void turnOn(){
         if(isSwitchedOn() == false) {
             setSwitchedOn(true);
-            System.out.println("System with ID:" + LaptopID + "has been booted");
+            System.out.println("System with ID:" + LaptopID + " has been booted");
             BootScreen();
         }
         else {
-            System.out.println("System with ID:" + LaptopID + "is already switched on");
+            System.out.println("System with ID:" + LaptopID + " is already switched on");
         }
     }
 
@@ -63,7 +63,7 @@ class Laptop{
             System.out.println("System with ID:" + LaptopID + " has been turned off");
         }
         else {
-            System.out.println("System with ID:" + LaptopID + "is already switched off");
+            System.out.println("System with ID:" + LaptopID + " is already switched off");
         }
     }
 }
@@ -79,6 +79,17 @@ class DELL extends Laptop implements Gaming{
     public void BootScreen() {
         System.out.println("Welcome to DELL");
     }
+
+    @Override
+    public void playGame() {
+        if(isSwitchedOn()) {
+            System.out.println("Playing a game on " + this.Laptopname);
+        }
+        else {
+            System.out.println(this.Laptopname + " is switched off, can't play a game");
+        }
+    }
+
 }
 
 //Inheritance
@@ -94,10 +105,31 @@ class Mac extends Laptop{
     }
 }
 
-//Aggregation
+//Factory
+class LaptopFactory{
+    public static Laptop getLaptop(String type, int LaptopID, String LaptopName){
+        switch(type){
+            case "DELL" : return new DELL(LaptopID, LaptopName);
+            case "Mac" : return new Mac(LaptopID, LaptopName);
+        }
+        return null;
+    }
+}
+
+//Aggregation + Singleton
 class LaptopList {
+    private static LaptopList instance;
     private static ArrayList<Laptop> LaptopArrayList = new ArrayList<>();
 
+    private LaptopList(){
+    }
+
+    public static LaptopList getInstance(){
+        if(instance==null){
+            instance = new LaptopList();
+        }
+        return instance;
+    }
     public static void addLaptop(Laptop LaptopObject){
         LaptopArrayList.add(LaptopObject);
     }
@@ -127,20 +159,13 @@ class LaptopList {
 //Main Driver Class
 public class OOPSDemo {
     public static void main(String args[]) {
-        LaptopList UserLaptops = new LaptopList();
+        LaptopList UserLaptops = LaptopList.getInstance();
 
+        UserLaptops.addLaptop(LaptopFactory.getLaptop("DELL",1, "MyDELL"));
+        UserLaptops.addLaptop(LaptopFactory.getLaptop("Mac",2, "MyMac"));
 
-        DELL dellObject = new DELL(1, "MyDELL");
-        Mac macObject = new Mac(2, "MyMac");
-
-        UserLaptops.addLaptop(dellObject);
-        UserLaptops.addLaptop(macObject);
-
-        dellObject.turnOn();
-        macObject.turnOn();
-
-        dellObject.playGame();
-
+        UserLaptops.turnOnAllLaptops();
+        ((Gaming)UserLaptops.getLaptops().get(0)).playGame();
         UserLaptops.shutdownAllLaptops();
     }
 }
