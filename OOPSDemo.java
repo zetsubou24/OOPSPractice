@@ -107,7 +107,7 @@ class Mac extends Laptop{
 
 //Factory
 class LaptopFactory{
-    public static Laptop getLaptop(String type, int LaptopID, String LaptopName){
+    public static Laptop createLaptop(String type, int LaptopID, String LaptopName){
         switch(type){
             case "DELL" : return new DELL(LaptopID, LaptopName);
             case "Mac" : return new Mac(LaptopID, LaptopName);
@@ -161,8 +161,8 @@ public class OOPSDemo {
     public static void main(String args[]) {
         LaptopList UserLaptops = LaptopList.getInstance();
 
-        UserLaptops.addLaptop(LaptopFactory.getLaptop("DELL",1, "MyDELL"));
-        UserLaptops.addLaptop(LaptopFactory.getLaptop("Mac",2, "MyMac"));
+        UserLaptops.addLaptop(LaptopFactory.createLaptop("DELL",1, "MyDELL"));
+        UserLaptops.addLaptop(LaptopFactory.createLaptop("Mac",2, "MyMac"));
 
         UserLaptops.turnOnAllLaptops();
         ((Gaming)UserLaptops.getLaptops().get(0)).playGame();
