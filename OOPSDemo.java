@@ -30,7 +30,7 @@ abstract class Laptop{
         this.Laptopname = LaptopName;
     }
 
-    public void BootScreen(){
+    public void bootScreen(){
         System.out.println("Welcome to the system");
     }
 
@@ -49,7 +49,7 @@ abstract class Laptop{
         if(isSwitchedOn() == false) {
             setSwitchedOn(true);
             System.out.println("System with ID:" + LaptopID + " has been booted");
-            BootScreen();
+            bootScreen();
         }
         else {
             System.out.println("System with ID:" + LaptopID + " is already switched on");
@@ -76,7 +76,7 @@ class DELL extends Laptop implements Gaming{
 
     //Runtime Polymorphism - Method Overriding;
     @Override
-    public void BootScreen() {
+    public void bootScreen() {
         System.out.println("Welcome to DELL");
     }
 
@@ -100,7 +100,7 @@ class Mac extends Laptop{
 
     //Runtime Polymorphism - Method Overriding;
     @Override
-    public void BootScreen() {
+    public void bootScreen() {
         System.out.println("Welcome to Mac");
     }
 }
